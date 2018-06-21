@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 /// @author vstevam
 contract Messenger{
   address public owner;
-  function Messenger() public{
+  function Messenger() public payable{
     owner = msg.sender;
   }
 
@@ -45,8 +45,8 @@ contract Messenger{
   function showMsgandClaimMoney(bytes32 _ecMsg, address _receiver, uint _amount) public payable returns(address){
     Msg memory msgB = msgs[_ecMsg];
     require(msgB.ecMsg == _ecMsg);
-    //msg.sender.transfer(_amount);
-    msgB.amount -= _amount;
+    _receiver.send(_amount);
+    msgs[_ecMsg].amount -= _amount;
     return msgB.receiver;
   }
 
